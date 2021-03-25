@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "D:\\Projects\\iot\\ESP8266_RTOS_SDK\\components\\esp8266\\include",
+                "D:\\Projects\\iot\\ESP8266_RTOS_SDK\\components\\freertos\\include"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": "",
+                "path": [
+                    "${workspaceRoot}",
+                    "D:\\Projects\\iot\\ESP8266_RTOS_SDK\\components",
+                    "D:\\tools\\esp\\esptools\\.espressif\\tools\\xtensa-lx106-elf"
+                ]
+            },
+            "defines": [],
+            "compilerPath": "D:\\tools\\esp\\esptools\\.espressif\\tools\\xtensa-lx106-elf\\bin\\xtensa-lx106-elf-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}

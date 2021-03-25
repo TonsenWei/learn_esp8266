@@ -1,0 +1,73 @@
+{   
+    "version": "2.0.0",
+    "options": {
+        "cwd": "${workspaceFolder}/build" //进入build目录
+    },
+    "tasks": [
+        {   // cmake ..
+            "type": "shell",
+            "label": "cmake",
+            // "command": "cmake",// 电脑上已安装微软MSVC编译器，会默认使用MSVC编译，
+            // 使用cmake -G "MinGW Makefiles" ..代替cmake .., 仅第一次时需要代替
+            "command": "cmake",
+            "args": [
+                "--no-warn-unused-cli",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
+                "-DCMAKE_BUILD_TYPE:STRING=Debug",
+                "-DCMAKE_C_COMPILER:FILEPATH=/home/V01.NET/uidq0460/.espressif/tools/xtensa-lx106-elf/esp-2020r3-49-gd5524c1-8.4.0/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc-8.4.0",
+                "-H/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/examples/get-started/hello_world",
+                "-B/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/examples/get-started/hello_world/build",
+                "-GNinja"
+            ]
+        },
+        {   // make
+            "label": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/build",
+                "--config",
+                "Debug",
+                "--target",
+                "all",
+                "--",
+                "-j",
+                "6"
+            ]
+        },
+        {   // flash
+            "type": "shell",
+            "label": "flash_bin",
+            "command": "python",
+            "args": [
+                "/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/components/esptool_py/esptool/esptool.py",
+                "--chip esp8266",
+                "--port /dev/ttyUSB2",
+                "--baud 115200",
+                "--before default_reset",
+                "--after hard_reset write_flash",
+                "-z",
+                "--flash_mode dio",
+                "--flash_freq 40m",
+                "--flash_size 2MB 0x0",
+                "${workspaceFolder}/build/bootloader/bootloader.bin 0x10000",
+                "${workspaceFolder}/build/hello-world.bin 0x8000",
+                "${workspaceFolder}/build/partitions_singleapp.bin"
+            ]
+        },
+        {   //依次执行cmake .. 和make任务
+            "label": "build_flash",
+			"dependsOrder": "sequence", // 按列出的顺序执行任务依赖项
+            "dependsOn":[
+                "cmake",
+                "build",
+                "flash_bin"
+            ]
+        }
+    ]
+
+}

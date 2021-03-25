@@ -1,0 +1,16 @@
+
+1.cmake config:
+Executing command: /usr/bin/cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/home/V01.NET/uidq0460/.espressif/tools/xtensa-lx106-elf/esp-2020r3-49-gd5524c1-8.4.0/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc-8.4.0 -H/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/examples/get-started/hello_world -B/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/examples/get-started/hello_world/build -GNinja
+
+2.cmake build:
+Executing command: /usr/bin/cmake --build /home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/examples/get-started/hello_world/build --config Debug --target all -- -j 6
+
+3.flash:
+Executing task: /home/V01.NET/uidq0460/.espressif/python_env/rtos3.4_py3.7_env/bin/python /home/V01.NET/uidq0460/esp/esp-idf/components/esptool_py/esptool/esptool.py -p /dev/ttyUSB2 -b 460800 --after hard_reset write_flash --flash_mode dio --flash_freq 40m --flash_size 2MB 0x8000 partition_table/partition-table.bin 0x0 bootloader/bootloader.bin 0x10000 hello-world.bin <
+
+
+python /home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/components/esptool_py/esptool/esptool.py --chip esp8266 --port /dev/ttyUSB2 --baud 115200 
+--before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 2MB 0x0 
+/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/examples/get-started/hello_world/build/bootloader/bootloader.bin 0x10000 
+/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/examples/get-started/hello_world/build/hello-world.bin 0x8000 
+/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/examples/get-started/hello_world/build/partitions_singleapp.bin
