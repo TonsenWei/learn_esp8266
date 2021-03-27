@@ -77,6 +77,7 @@ void drawBattery(int x, int y);
 void drawBatteryFull(int x, int y);
 void drawBatterycharging(int x, int y);
 void drawBatteryLow(int x, int y);
+void drawBatteryStatus(int x, int y, char num);
 
 esp_err_t i2c_example_master_init() {
   // int i2c_master_port = I2C_NUM_0;
@@ -152,8 +153,8 @@ void task_oled(void *para) {
   u8g2_Setup_ssd1306_i2c_128x64_noname_f(&u8g2, U8G2_R0, u8x8_byte_hw_i2c, u8x8_gpio_and_delay);//u8g2_Setup_ssd1306_i2c_128x64_noname_1
   u8g2_InitDisplay(&u8g2);
   u8g2_SetPowerSave(&u8g2, 0); // wake up display
-  initMenu();
-  updateMenu();
+  // initMenu();
+  // updateMenu();
   while (1) {
     // if (eTaskGetState(ADC_Task_Handler) == 2) //suspend
     // {
@@ -172,15 +173,25 @@ void adc_task(void *pvParameters) {
   ESP_LOGI(TAG, "adc init ok, start read...\r\n");
   uint16_t adc_data[100];
   /*suspend task after init adc, when select the resume,then resume task*/
-  vTaskSuspend(ADC_Task_Handler);
+  // vTaskSuspend(ADC_Task_Handler);
+  static char batCounter = 0;
   while (1) {
     if (ESP_OK == adc_read(&adc_data[0])) {
         ESP_LOGI(TAG, "adc read: %d\r\n", adc_data[0]);
         u8g2_SetDrawColor(&u8g2, draw_color);
         u8g2_SetFont(&u8g2, u8g2_font_6x12_tr);//u8g2_font_crox5tb_tr 
         u8g2_ClearBuffer(&u8g2);
-        u8g2_DrawStr(&u8g2, 0, 16*2 - 1, "read value:");
-        u8g2_DrawStr(&u8g2, 0, 16*3 - 1, convert_ADC(adc_data[0]));
+        u8g2_DrawStr(&u8g2, 0, 16*1 - 1, "return value:");
+        u8g2_DrawStr(&u8g2, 0, 16*2 - 1, convert_ADC(adc_data[0]));
+        drawBattery(35, 32);
+        drawBatteryStatus(35, 32, batCounter);
+        batCounter ++;
+        if (batCounter > 4)
+        {
+          batCounter = 0;
+          u8g2_SetDrawColor(&u8g2, 0);
+          u8g2_DrawStr(&u8g2, 35 + 19, 32 + 18, "100%");
+        }
         u8g2_SendBuffer(&u8g2);
     }
 
@@ -349,17 +360,21 @@ void key_task(void *pvParameters)
 /*LED任务函数 */
 void led_task(void *pvParameters)
 {
-    static int led_time_counter = 0;
+    // static int led_time_counter = 0;
     while (1)
     {
-        led_time_counter ++;
-        if (led_time_counter > 1000)
-        {
-            led_time_counter = 0;
-            printf("Toogle LED %d!\n", led_time_counter);
-        }
-        gpio_set_level(GPIO_LED_NUM, led_time_counter % 2);
-        vTaskDelay(300 / portTICK_PERIOD_MS);
+        // led_time_counter ++;
+        // if (led_time_counter > 1000)
+        // {
+        //     led_time_counter = 0;
+        //     printf("Toogle LED %d!\n", led_time_counter);
+        // }
+        // gpio_set_level(GPIO_LED_NUM, led_time_counter % 2);
+        // vTaskDelay(300 / portTICK_PERIOD_MS);
+        gpio_set_level(GPIO_LED_NUM, 0);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+        gpio_set_level(GPIO_LED_NUM, 1);
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
 }
 
@@ -549,10 +564,44 @@ void drawBattery(int x, int y)
   u8g2_DrawLine(&u8g2, x + 57, y + 1, x + 57, y + 28);
 }
 
+/**
+ * inner Box width = 46, high = 22;
+*/
 void drawBatteryFull(int x, int y)
 {
   u8g2_DrawBox(&u8g2, x + 7, y + 4, 46, 22);
 }
+
+
+/**
+ * inner Box width = 46, high = 22;
+ * 46 / 4 = 11.5   11 11 12 12
+ * 
+*/
+void drawBatteryStatus(int x, int y, char num)
+{
+  switch (num)
+  {
+    case 0:
+      // u8g2_DrawBox(&u8g2, x + 7 + (46), y + 4, 1, 22);
+      break;
+    case 1:
+      u8g2_DrawBox(&u8g2, x + 7 + (46 - 11), y + 4, 11, 22);
+      break;
+    case 2:
+      u8g2_DrawBox(&u8g2, x + 7 + (46 - 11 - 11), y + 4, 11 + 11, 22);
+      break;
+    case 3:
+      u8g2_DrawBox(&u8g2, x + 7 + (46 - 11 -11 - 12), y + 4, 11 + 11 + 12, 22);
+      break;
+    case 4:
+      u8g2_DrawBox(&u8g2, x + 7 + (46 - 11 -11 - 12 -12), y + 4, 11 + 11 + 12 + 12, 22);
+      break;
+    default:
+      break;
+  }
+}
+
 
 void drawBatterycharging(int x, int y)
 {

@@ -27,9 +27,11 @@ typedef struct menu        //定义一个菜单
     void (**func)();                   //选择相应项按确定键后执行的函数
 } Menu;
 
-
+/**
+ * You can set itemCount to 1,so just Press Enter to submenu
+*/
 Menu MainMenu = { //定义主菜单
-  0,3,8,0,//默认显示0-3项，总共4项，当前选择第0项
+  0,3,1,0,//默认显示0-3项，总共4项，当前选择第0项
   {
   "SET01           ",
   "Suspend        >",
@@ -136,7 +138,7 @@ void initMenu()
     MainMenu.subMenus[2] = &runningMenu;
     MainMenu.subMenus[3] = &searchMenu; //第四项查询有子菜单
     MainMenu.func = pvPortMalloc(sizeof(&func)*8);
-    MainMenu.func[0] = &led_off;
+    MainMenu.func[0] = &suspendAdcTask;
     MainMenu.func[1] = &suspendAdcTask;
     MainMenu.func[2] = &resumeAdcTask;//当选择了并按了确定，会执行func函数
     MainMenu.func[3] = &func;
