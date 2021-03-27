@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/components/esp8266/include",
+                "/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/components/freertos/include/freertos",
+                "/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/examples/get-started/multi_menu/main/menu",
+                "/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/components/esp8266/include/driver",
+                "/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/components/freertos/include",
+                "/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/components/log/include"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": "",
+                "path": [
+                    "${workspaceRoot}",
+                    "/home/V01.NET/uidq0460/projects/esp/ESP8266_RTOS_SDK/components",
+                    "/home/V01.NET/uidq0460/projects/esp/xtensa-lx106-elf"
+                ]
+            },
+            "defines": [],
+            "compilerPath": "/home/V01.NET/uidq0460/projects/esp/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+        }
+    ],
+    "version": 4
+}

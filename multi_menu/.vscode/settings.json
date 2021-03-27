@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "esp_system.h": "c",
+        "task.h": "c",
+        "esp_spi_flash.h": "c",
+        "gpio.h": "c",
+        "menu.h": "c",
+        "freertos.h": "c",
+        "u8g2.h": "c",
+        "u8x8.h": "c"
+    },
+    "idf.port": "/dev/ttyUSB0",
+    "idf.flashType": "UART",
+}
